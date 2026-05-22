@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700;900&family=Mulish:wght@300;400;500;600&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --orange:#E8511A;
+  --orange-dark:#C43E0E;
+  --cream:#FFF8F4;
+  --dark:#1A0A00;
+  --gray:#6B5B52;
+  --border:#F0DDD4;
+  --white:#FFFFFF;
+  --green:#10B981;
+}
+body{font-family:'Mulish',sans-serif;background:var(--cream);color:var(--dark);min-height:100vh;}
+nav{display:flex;justify-content:space-between;align-items:center;padding:14px 48px;background:var(--white);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
+.logo{font-family:'Unbounded',sans-serif;font-size:18px;font-weight:900;color:var(--orange);cursor:pointer;}
+.logo span{color:var(--dark);}
+.nav-right{display:flex;align-items:center;gap:16px;}
+.nav-notif{width:36px;height:36px;background:var(--cream);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;border:1px solid var(--border);}
+.nav-avatar{width:36px;height:36px;background:#7C3AED;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px;cursor:pointer;}
+.nav-name{font-size:14px;font-weight:600;}
+.layout{display:grid;grid-template-columns:240px 1fr;min-height:calc(100vh - 65px);}
+.sidebar{background:var(--white);border-right:1px solid var(--border);padding:24px 0;}
+.sidebar-item{display:flex;align-items:center;gap:12px;padding:12px 24px;font-size:14px;font-weight:500;color:var(--gray);cursor:pointer;transition:all 0.2s;}
+.sidebar-item:hover{background:var(--cream);color:var(--dark);}
+.sidebar-item.active{background:#FEE8DD;color:var(--orange);font-weight:600;border-right:3px solid var(--orange);}
+.sidebar-icon{font-size:18px;}
+.sidebar-divider{height:1px;background:var(--border);margin:12px 24px;}
+.sidebar-badge{background:var(--orange);color:#fff;font-size:11px;font-weight:700;padding:2px 8px;border-radius:100px;margin-left:auto;}
+.main{padding:32px 40px;}
+.page-title{font-family:'Unbounded',sans-serif;font-size:24px;font-weight:900;margin-bottom:4px;}
+.page-sub{font-size:14px;color:var(--gray);margin-bottom:32px;}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px;}
+.stat-card{background:var(--white);border-radius:16px;padding:20px;border:1px solid var(--border);}
+.stat-card-num{font-family:'Unbounded',sans-serif;font-size:28px;font-weight:900;color:var(--orange);margin-bottom:4px;}
+.stat-card-label{font-size:13px;color:var(--gray);}
+.section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.section-title{font-family:'Unbounded',sans-serif;font-size:16px;font-weight:700;}
+.filter-btns{display:flex;gap:8px;margin-bottom:20px;}
+.filter-btn{padding:8px 16px;border-radius:8px;border:1.5px solid var(--border);background:#fff;font-family:'Mulish',sans-serif;font-size:13px;font-weight:600;cursor:pointer;color:var(--gray);}
+.filter-btn.active{border-color:var(--orange);background:#FEE8DD;color:var(--orange);}
+.ads-list{display:flex;flex-direction:column;gap:12px;}
+.ad-card{background:var(--white);border-radius:16px;padding:20px;border:1px solid var(--border);}
+.ad-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;}
+.ad-title{font-family:'Unbounded',sans-serif;font-size:14px;font-weight:700;}
+.ad-budget{font-family:'Unbounded',sans-serif;font-size:16px;font-weight:900;color:var(--orange);}
+.ad-desc{font-size:13px;color:var(--gray);margin-bottom:12px;line-height:1.5;}
+.ad-meta{display:flex;gap:16px;font-size:12px;color:var(--gray);flex-wrap:wrap;}
+.ad-footer{display:flex;justify-content:space-between;align-items:center;margin-top:16px;padding-top:16px;border-top:1px solid var(--border);}
+.ad-time{font-size:12px;color:var(--gray);}
+.btn-respond{background:var(--orange);color:#fff;padding:10px 20px;border-radius:8px;border:none;font-family:'Mulish',sans-serif;font-size:13px;font-weight:700;cursor:pointer;}
+.btn-responded{background:#D1FAE5;color:#065F46;padding:10px 20px;border-radius:8px;border:none;font-family:'Mulish',sans-serif;font-size:13px;font-weight:700;cursor:default;}
+.ad-new{border-left:3px solid var(--orange);}
+.badge-new{background:#FEE8DD;color:var(--orange);font-size:11px;font-weight:700;padding:3px 10px;border-radius:100px;}
+
+/* PROFILE */
+.profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+.profile-card{background:var(--white);border-radius:16px;padding:24px;border:1px solid var(--border);}
+.profile-header{display:flex;gap:16px;align-items:center;margin-bottom:24px;}
+.profile-avatar{width:72px;height:72px;background:#7C3AED;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:26px;}
+.profile-name{font-family:'Unbounded',sans-serif;font-size:18px;font-weight:700;}
+.profile-sub{font-size:13px;color:var(--gray);margin-top:4px;}
+.profile-rating{display:flex;align-items:center;gap:6px;margin-top:6px;}
+.stars{color:#F59E0B;font-size:14px;}
+.rating-num{font-size:13px;font-weight:600;}
+.form-group{margin-bottom:16px;}
+.form-label{font-size:13px;font-weight:600;margin-bottom:6px;display:block;}
+.form-input{width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:10px;font-family:'Mulish',sans-serif;font-size:14px;outline:none;}
+.form-input:focus{border-color:var(--orange);}
+.form-textarea{width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:10px;font-family:'Mulish',sans-serif;font-size:14px;outline:none;resize:vertical;min-height:80px;}
+.btn-save{background:var(--orange);color:#fff;padding:12px 24px;border-radius:8px;border:none;font-family:'Mulish',sans-serif;font-size:14px;font-weight:700;cursor:pointer;}
+.portfolio-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px;}
+.portfolio-item{background:var(--cream);border-radius:8px;aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:24px;cursor:pointer;border:1px solid var(--border);}
+.portfolio-add{border:2px dashed var(--border);background:#fff;}
+
+/* MODAL */
+.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:center;}
+.modal.open{display:flex;}
+.modal-box{background:#fff;border-radius:24px;padding:40px;max-width:500px;width:90%;}
+.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;}
+.modal-title{font-family:'Unbounded',sans-serif;font-size:20px;font-weight:900;}
+.modal-close{background:none;border:none;font-size:24px;cursor:pointer;color:var(--gray);}
+.form-textarea-modal{width:100%;padding:13px 16px;border:1.5px solid var(--border);border-radius:10px;font-family:'Mulish',sans-serif;font-size:14px;outline:none;resize:vertical;min-height:120px;margin-bottom:16px;}
+.form-textarea-modal:focus{border-color:var(--orange);}
+.price-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;}
+.btn-submit{width:100%;background:var(--orange);color:#fff;padding:16px;border-radius:10px;border:none;font-family:'Mulish',sans-serif;font-size:16px;font-weight:700;cursor:pointer;}
+.empty{text-align:center;padding:60px 20px;}
+.empty-icon{font-size:48px;margin-bottom:16px;}
+.empty-title{font-family:'Unbounded',sans-serif;font-size:18px;font-weight:700;margin-bottom:8px;}
+.empty-text{font-size:14px;color:var(--gray);}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">КИРПИЧ<span>.KZ</span></div>
+  <div class="nav-right">
+    <div class="nav-notif">🔔</div>
+    <div class="nav-name">Асхат</div>
+    <div class="nav-avatar">А</div>
+  </div>
+</nav>
+
+<div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-item active" onclick="showTab('jobs', this)">
+      <span class="sidebar-icon">📋</span> Объявления
+      <span class="sidebar-badge">12</span>
+    </div>
+    <div class="sidebar-item" onclick="showTab('myresponses', this)">
+      <span class="sidebar-icon">💬</span> Мои отклики
+    </div>
+    <div class="sidebar-item" onclick="showTab('active', this)">
+      <span class="sidebar-icon">🔨</span> В работе
+    </div>
+    <div class="sidebar-item" onclick="showTab('done', this)">
+      <span class="sidebar-icon">✅</span> Завершённые
+    </div>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-item" onclick="showTab('profile', this)">
+      <span class="sidebar-icon">👤</span> Мой профиль
+    </div>
+    <div class="sidebar-item" onclick="window.location='index.html'">
+      <span class="sidebar-icon">🚪</span> Выйти
+    </div>
+  </div>
+
+  <div class="main">
+
+    <!-- JOBS TAB -->
+    <div id="tab-jobs">
+      <div class="page-title">Объявления клиентов</div>
+      <div class="page-sub">Откликайтесь на подходящие заказы</div>
+
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-card-num">12</div><div class="stat-card-label">Новых объявлений</div></div>
+        <div class="stat-card"><div class="stat-card-num">5</div><div class="stat-card-label">Моих откликов</div></div>
+        <div class="stat-card"><div class="stat-card-num">3</div><div class="stat-card-label">В работе</div></div>
+        <div class="stat-card"><div class="stat-card-num">4.9⭐</div><div class="stat-card-label">Мой рейтинг</div></div>
+      </div>
+
+      <div class="filter-btns">
+        <button class="filter-btn active" onclick="setFilter(this)">Все</button>
+        <button class="filter-btn" onclick="setFilter(this)">Ремонт квартир</button>
+        <button class="filter-btn" onclick="setFilter(this)">Стройка</button>
+        <button class="filter-btn" onclick="setFilter(this)">Алматы</button>
+        <button class="filter-btn" onclick="setFilter(this)">Астана</button>
+      </div>
+
+      <div class="ads-list">
+        <div class="ad-card ad-new">
+          <div class="ad-header">
+            <div>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+                <div class="ad-title">Ремонт квартиры 75м² под ключ</div>
+                <span class="badge-new">Новое</span>
+              </div>
+              <div class="ad-meta">
+                <span>📍 Алматы</span>
+                <span>🏠 Ремонт квартиры</span>
+                <span>📅 Сегодня</span>
+              </div>
+            </div>
+            <div class="ad-budget">2 500 000 ₸</div>
+          </div>
+          <div class="ad-desc">Нужен полный ремонт 3-комнатной квартиры. Выравнивание стен, новая сантехника, электрика, укладка плитки в ванной. Материалы заказчика.</div>
+          <div class="ad-footer">
+            <div class="ad-time">💬 3 отклика · 2 часа назад</div>
+            <button class="btn-respond" onclick="openRespond('Ремонт квартиры 75м²')">Откликнуться →</button>
+          </div>
+        </div>
+
+        <div class="ad-card ad-new">
+          <div class="ad-header">
+            <div>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+                <div class="ad-title">Строительство дома 120м²</div>
+                <span class="badge-new">Новое</span>
+              </div>
+              <div class="ad-meta">
+                <span>📍 Астана</span>
+                <span>🏗️ Стройка</span>
+                <span>📅 Вчера</span>
+              </div>
+            </div>
+            <div class="ad-budget">15 000 000 ₸</div>
+          </div>
+          <div class="ad-desc">Строительство частного дома 120м² из кирпича. Нужна бригада с опытом. Участок готов, проект есть.</div>
+          <div class="ad-footer">
+            <div class="ad-time">💬 7 откликов · Вчера</div>
+            <button class="btn-respond" onclick="openRespond('Строительство дома 120м²')">Откликнуться →</button>
+          </div>
+        </div>
+
+        <div class="ad-card">
+          <div class="ad-header">
+            <div>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+                <div class="ad-title">Натяжной потолок в зале 25м²</div>
+              </div>
+              <div class="ad-meta">
+                <span>📍 Алматы</span>
+                <span>🪟 Потолки</span>
+                <span>📅 2 дня назад</span>
+              </div>
+            </div>
+            <div class="ad-budget">150 000 ₸</div>
+          </div>
+          <div class="ad-desc">Нужна установка натяжного потолка в зале. Глянцевый белый. Площадь 25м².</div>
+          <div class="ad-footer">
+            <div class="ad-time">💬 2 отклика · 2 дня назад</div>
+            <button class="btn-responded">✓ Откликнулся</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MY RESPONSES TAB -->
+    <div id="tab-myresponses" style="display:none;">
+      <div class="page-title">Мои отклики</div>
+      <div class="page-sub">Статус ваших откликов</div>
+      <div class="ads-list">
+        <div class="ad-card">
+          <div class="ad-header">
+            <div class="ad-title">Натяжной потолок в зале 25м²</div>
+            <span style="background:#FEF3C7;color:#92400E;padding:4px 12px;border-radius:100px;font-size:12px;font-weight:600;">⏳ Ожидает</span>
+          </div>
+          <div class="ad-meta" style="margin-bottom:12px;">
+            <span>📍 Алматы</span>
+            <span>💰 Предложил: 130 000 ₸</span>
+          </div>
+          <div style="font-size:13px;color:var(--gray);background:var(--cream);padding:12px;border-radius:8px;">
+            "Готов выполнить работу качественно и в срок. Работаю с гарантией."
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ACTIVE TAB -->
+    <div id="tab-active" style="display:none;">
+      <div class="page-title">В работе</div>
+      <div class="page-sub">Текущие заказы</div>
+      <div class="empty">
+        <div class="empty-icon">🔨</div>
+        <div class="empty-title">Нет активных заказов</div>
+        <div class="empty-text">Откликайтесь на объявления чтобы получить заказ</div>
+      </div>
+    </div>
+
+    <!-- DONE TAB -->
+    <div id="tab-done" style="display:none;">
+      <div class="page-title">Завершённые работы</div>
+      <div class="page-sub">История выполненных заказов</div>
+      <div class="empty">
+        <div class="empty-icon">✅</div>
+        <div class="empty-title">Нет завершённых работ</div>
+        <div class="empty-text">Здесь будет ваша история заказов</div>
+      </div>
+    </div>
+
+    <!-- PROFILE TAB -->
+    <div id="tab-profile" style="display:none;">
+      <div class="page-title">Мой профиль</div>
+      <div class="page-sub">Заполните профиль чтобы получать больше заказов</div>
+      <div class="profile-grid">
+        <div class="profile-card">
+          <div class="profile-header">
+            <div class="profile-avatar">А</div>
+            <div>
+              <div class="profile-name">Асхат Бейсенов</div>
+              <div class="profile-sub">Мастер · Алматы</div>
+              <div class="profile-rating">
+                <span class="stars">★★★★★</span>
+                <span class="rating-num">4.9 (142 отзыва)</span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Имя</label>
+            <input class="form-input" value="Асхат">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Телефон</label>
+            <input class="form-input" value="+7 701 234 56 78">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Опыт работы</label>
+            <input class="form-input" value="8 лет">
+          </div>
+          <div class="form-group">
+            <label class="form-label">О себе</label>
+            <textarea class="form-textarea">Профессиональный строитель с опытом 8 лет. Работаю с гарантией. Качество гарантирую.</textarea>
+          </div>
+          <button class="btn-save">Сохранить →</button>
+        </div>
+        <div class="profile-card">
+          <div class="section-title" style="margin-bottom:16px;">Портфолио</div>
+          <div class="portfolio-grid">
+            <div class="portfolio-item">🏠</div>
+            <div class="portfolio-item">🧱</div>
+            <div class="portfolio-item">🎨</div>
+            <div class="portfolio-item portfolio-add">➕</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- RESPOND MODAL -->
+<div class="modal" id="modal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-title">Откликнуться</div>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+    <div id="modal-job-title" style="font-size:14px;color:var(--gray);margin-bottom:20px;"></div>
+    <textarea class="form-textarea-modal" placeholder="Напишите почему вы подходите для этой работы..."></textarea>
+    <div class="price-row">
+      <div class="form-group">
+        <label class="form-label">Ваша цена (₸)</label>
+        <input class="form-input" type="number" placeholder="2 000 000">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Срок выполнения</label>
+        <input class="form-input" type="text" placeholder="2 недели">
+      </div>
+    </div>
+    <button class="btn-submit" onclick="submitResponse()">Отправить отклик →</button>
+  </div>
+</div>
+
+<script>
+function showTab(tab, el) {
+  ['jobs','myresponses','active','done','profile'].forEach(t => {
+    document.getElementById('tab-'+t).style.display = 'none';
+  });
+  document.getElementById('tab-'+tab).style.display = 'block';
+  document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+  if(el) el.classList.add('active');
+}
+function setFilter(el) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+}
+function openRespond(title) {
+  document.getElementById('modal-job-title').textContent = '📋 ' + title;
+  document.getElementById('modal').classList.add('open');
+}
+function closeModal(){document.getElementById('modal').classList.remove('open');}
+document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeModal();});
+function submitResponse(){
+  closeModal();
+  alert('Отклик отправлен! Ожидайте ответа клиента.');
+}
+</script>
+</body>
+</html>
