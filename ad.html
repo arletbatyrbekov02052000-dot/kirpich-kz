@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700;900&family=Mulish:wght@300;400;500;600&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --orange:#E8511A;
+  --orange-dark:#C43E0E;
+  --cream:#FFF8F4;
+  --dark:#1A0A00;
+  --gray:#6B5B52;
+  --border:#F0DDD4;
+  --white:#FFFFFF;
+  --green:#10B981;
+}
+body{font-family:'Mulish',sans-serif;background:var(--cream);color:var(--dark);}
+nav{display:flex;justify-content:space-between;align-items:center;padding:14px 48px;background:var(--white);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
+.logo{font-family:'Unbounded',sans-serif;font-size:18px;font-weight:900;color:var(--orange);cursor:pointer;}
+.logo span{color:var(--dark);}
+.nav-right{display:flex;align-items:center;gap:16px;}
+.nav-avatar{width:36px;height:36px;background:#7C3AED;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px;}
+.nav-name{font-size:14px;font-weight:600;}
+
+.breadcrumb{padding:20px 48px;font-size:13px;color:var(--gray);}
+.breadcrumb a{color:var(--orange);cursor:pointer;}
+
+.container{max-width:1100px;margin:0 auto;padding:0 48px 60px;display:grid;grid-template-columns:1fr 380px;gap:32px;}
+
+/* LEFT */
+.ad-images{background:var(--white);border-radius:16px;overflow:hidden;margin-bottom:24px;border:1px solid var(--border);}
+.main-image{height:360px;background:linear-gradient(135deg,#F5EDD8,#E8DCC8);display:flex;align-items:center;justify-content:center;font-size:80px;}
+.image-thumbs{display:flex;gap:8px;padding:12px;}
+.thumb{width:72px;height:56px;background:var(--cream);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:24px;cursor:pointer;border:2px solid transparent;}
+.thumb.active{border-color:var(--orange);}
+.thumb-add{border:2px dashed var(--border);background:#fff;}
+
+.ad-main{background:var(--white);border-radius:16px;padding:28px;border:1px solid var(--border);margin-bottom:24px;}
+.ad-category{display:inline-block;background:#FEE8DD;color:var(--orange);padding:4px 12px;border-radius:100px;font-size:12px;font-weight:700;margin-bottom:12px;}
+.ad-title{font-family:'Unbounded',sans-serif;font-size:22px;font-weight:900;margin-bottom:16px;line-height:1.3;}
+.ad-meta-row{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:20px;}
+.ad-meta-item{display:flex;align-items:center;gap:6px;font-size:14px;color:var(--gray);}
+.ad-divider{height:1px;background:var(--border);margin:20px 0;}
+.ad-desc-title{font-family:'Unbounded',sans-serif;font-size:14px;font-weight:700;margin-bottom:12px;}
+.ad-desc-text{font-size:14px;color:var(--gray);line-height:1.7;}
+
+.responses-section{background:var(--white);border-radius:16px;padding:28px;border:1px solid var(--border);}
+.responses-title{font-family:'Unbounded',sans-serif;font-size:16px;font-weight:700;margin-bottom:20px;}
+.response-card{border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px;}
+.response-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;}
+.master-info{display:flex;gap:12px;align-items:center;}
+.master-avatar{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:16px;}
+.master-name{font-family:'Unbounded',sans-serif;font-size:13px;font-weight:700;}
+.master-meta{font-size:12px;color:var(--gray);margin-top:2px;}
+.master-stars{color:#F59E0B;font-size:12px;}
+.response-price{font-family:'Unbounded',sans-serif;font-size:18px;font-weight:900;color:var(--orange);}
+.response-text{font-size:13px;color:var(--gray);line-height:1.5;margin-bottom:12px;}
+.response-btns{display:flex;gap:8px;}
+.btn-accept{background:var(--orange);color:#fff;padding:8px 16px;border-radius:8px;border:none;font-family:'Mulish',sans-serif;font-size:13px;font-weight:700;cursor:pointer;}
+.btn-chat{background:var(--cream);color:var(--dark);padding:8px 16px;border-radius:8px;border:1px solid var(--border);font-family:'Mulish',sans-serif;font-size:13px;font-weight:600;cursor:pointer;}
+.btn-decline{background:#FEE8DD;color:var(--orange-dark);padding:8px 16px;border-radius:8px;border:none;font-family:'Mulish',sans-serif;font-size:13px;font-weight:600;cursor:pointer;}
+
+/* RIGHT SIDEBAR */
+.sticky-card{position:sticky;top:85px;}
+.price-card{background:var(--white);border-radius:16px;padding:24px;border:1px solid var(--border);margin-bottom:16px;}
+.price-label{font-size:13px;color:var(--gray);margin-bottom:4px;}
+.price-value{font-family:'Unbounded',sans-serif;font-size:32px;font-weight:900;color:var(--orange);margin-bottom:20px;}
+.btn-respond-main{width:100%;background:var(--orange);color:#fff;padding:14px;border-radius:10px;border:none;font-family:'Mulish',sans-serif;font-size:15px;font-weight:700;cursor:pointer;margin-bottom:10px;}
+.btn-save{width:100%;background:var(--cream);color:var(--dark);padding:14px;border-radius:10px;border:1px solid var(--border);font-family:'Mulish',sans-serif;font-size:15px;font-weight:600;cursor:pointer;}
+.price-meta{margin-top:16px;}
+.price-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;}
+.price-row:last-child{border-bottom:none;}
+.price-row-label{color:var(--gray);}
+.price-row-val{font-weight:600;}
+
+.client-card{background:var(--white);border-radius:16px;padding:20px;border:1px solid var(--border);}
+.client-title{font-family:'Unbounded',sans-serif;font-size:13px;font-weight:700;margin-bottom:16px;}
+.client-info{display:flex;gap:12px;align-items:center;}
+.client-avatar{width:48px;height:48px;background:var(--orange);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:18px;}
+.client-name{font-size:14px;font-weight:600;}
+.client-sub{font-size:12px;color:var(--gray);margin-top:2px;}
+.client-rating{font-size:12px;color:#F59E0B;margin-top:2px;}
+
+/* MODAL */
+.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:center;}
+.modal.open{display:flex;}
+.modal-box{background:#fff;border-radius:24px;padding:40px;max-width:500px;width:90%;}
+.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;}
+.modal-title{font-family:'Unbounded',sans-serif;font-size:20px;font-weight:900;}
+.modal-close{background:none;border:none;font-size:24px;cursor:pointer;color:var(--gray);}
+.form-group{margin-bottom:16px;}
+.form-label{font-size:13px;font-weight:600;margin-bottom:6px;display:block;}
+.form-input{width:100%;padding:13px 16px;border:1.5px solid var(--border);border-radius:10px;font-family:'Mulish',sans-serif;font-size:14px;outline:none;}
+.form-input:focus{border-color:var(--orange);}
+.form-textarea{width:100%;padding:13px 16px;border:1.5px solid var(--border);border-radius:10px;font-family:'Mulish',sans-serif;font-size:14px;outline:none;resize:vertical;min-height:120px;}
+.form-textarea:focus{border-color:var(--orange);}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.btn-submit{width:100%;background:var(--orange);color:#fff;padding:16px;border-radius:10px;border:none;font-family:'Mulish',sans-serif;font-size:16px;font-weight:700;cursor:pointer;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo" onclick="window.location='index.html'">КИРПИЧ<span>.KZ</span></div>
+  <div class="nav-right">
+    <div class="nav-name">Асхат</div>
+    <div class="nav-avatar">А</div>
+  </div>
+</nav>
+
+<div class="breadcrumb">
+  <a onclick="window.location='index.html'">Главная</a> → 
+  <a onclick="window.location='master-dashboard.html'">Объявления</a> → 
+  Ремонт квартиры 75м²
+</div>
+
+<div class="container">
+  <div>
+    <div class="ad-images">
+      <div class="main-image">🏠</div>
+      <div class="image-thumbs">
+        <div class="thumb active">🏠</div>
+        <div class="thumb">🚿</div>
+        <div class="thumb">🪟</div>
+        <div class="thumb">🔌</div>
+      </div>
+    </div>
+
+    <div class="ad-main">
+      <div class="ad-category">🏠 Ремонт квартиры</div>
+      <div class="ad-title">Ремонт квартиры 75м² под ключ в Алматы</div>
+      <div class="ad-meta-row">
+        <div class="ad-meta-item">📍 Алматы, Бостандыкский район</div>
+        <div class="ad-meta-item">📅 Опубликовано 20 мая 2026</div>
+        <div class="ad-meta-item">👁️ 124 просмотра</div>
+        <div class="ad-meta-item">💬 5 откликов</div>
+      </div>
+      <div class="ad-divider"></div>
+      <div class="ad-desc-title">Описание работы</div>
+      <div class="ad-desc-text">
+        Нужен полный ремонт 3-комнатной квартиры площадью 75м². Квартира в новостройке, черновая отделка.<br><br>
+        <strong>Что нужно сделать:</strong><br>
+        • Выравнивание стен и потолков<br>
+        • Укладка плитки в ванной комнате и туалете<br>
+        • Монтаж натяжных потолков в комнатах<br>
+        • Электрика и розетки<br>
+        • Сантехника<br>
+        • Покраска стен<br>
+        • Укладка ламината<br><br>
+        Материалы частично заказчика, частично мастера. Готов обсудить детали. Нужна бригада с опытом минимум 5 лет.
+      </div>
+      <div class="ad-divider"></div>
+      <div class="ad-desc-title">Требования к мастеру</div>
+      <div class="ad-desc-text">
+        • Опыт от 5 лет<br>
+        • Наличие портфолио похожих работ<br>
+        • Гарантия на работу<br>
+        • Возможность начать в течение 2 недель
+      </div>
+    </div>
+
+    <div class="responses-section">
+      <div class="responses-title">Отклики мастеров (5)</div>
+
+      <div class="response-card">
+        <div class="response-header">
+          <div class="master-info">
+            <div class="master-avatar" style="background:var(--orange);">А</div>
+            <div>
+              <div class="master-name" onclick="window.location='master.html'" style="cursor:pointer;color:var(--orange)">Асхат Бейсенов</div>
+              <div class="master-stars">★★★★★</div>
+              <div class="master-meta">Опыт 8 лет · 142 работы · Алматы</div>
+            </div>
+          </div>
+          <div class="response-price">2 200 000 ₸</div>
+        </div>
+        <div class="response-text">Здравствуйте! Готов взяться за ваш проект. Работаю качественно и в срок. Есть портфолио похожих работ. Гарантия 2 года на все виды работ.</div>
+        <div class="response-btns">
+          <button class="btn-accept">✓ Принять</button>
+          <button class="btn-chat" onclick="window.location='chat.html'">💬 Написать</button>
+          <button class="btn-decline">✕ Отклонить</button>
+        </div>
+      </div>
+
+      <div class="response-card">
+        <div class="response-header">
+          <div class="master-info">
+            <div class="master-avatar" style="background:#7C3AED;">Д</div>
+            <div>
+              <div class="master-name" onclick="window.location='master.html'" style="cursor:pointer;color:var(--orange)">Данияр Сейткали</div>
+              <div class="master-stars">★★★★☆</div>
+              <div class="master-meta">Опыт 5 лет · 89 работ · Алматы</div>
+            </div>
+          </div>
+          <div class="response-price">2 100 000 ₸</div>
+        </div>
+        <div class="response-text">Опытная бригада из 4 человек. Работаем быстро и чисто. Есть портфолио похожих работ в Алматы.</div>
+        <div class="response-btns">
+          <button class="btn-accept">✓ Принять</button>
+          <button class="btn-chat" onclick="window.location='chat.html'">💬 Написать</button>
+          <button class="btn-decline">✕ Отклонить</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sticky-card">
+    <div class="price-card">
+      <div class="price-label">Бюджет клиента</div>
+      <div class="price-value">2 500 000 ₸</div>
+      <button class="btn-respond-main" onclick="openModal()">Откликнуться →</button>
+      <button class="btn-save">🔖 Сохранить</button>
+      <div class="price-meta">
+        <div class="price-row"><span class="price-row-label">Статус</span><span class="price-row-val" style="color:var(--green);">✓ Активно</span></div>
+        <div class="price-row"><span class="price-row-label">Откликов</span><span class="price-row-val">5</span></div>
+        <div class="price-row"><span class="price-row-label">Город</span><span class="price-row-val">Алматы</span></div>
+        <div class="price-row"><span class="price-row-label">Срок</span><span class="price-row-val">Обсуждается</span></div>
+      </div>
+    </div>
+
+    <div class="client-card">
+      <div class="client-title">Клиент</div>
+      <div class="client-info">
+        <div class="client-avatar">А</div>
+        <div>
+          <div class="client-name">Айгуль Б.</div>
+          <div class="client-sub">На платформе с мая 2026</div>
+          <div class="client-rating">★★★★★ 3 отзыва</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RESPOND MODAL -->
+<div class="modal" id="modal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-title">Откликнуться</div>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Ваше сообщение клиенту</label>
+      <textarea class="form-textarea" placeholder="Расскажите почему вы подходите для этой работы..."></textarea>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Ваша цена (₸)</label>
+        <input class="form-input" type="number" placeholder="2 000 000">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Срок выполнения</label>
+        <input class="form-input" placeholder="Например: 3 недели">
+      </div>
+    </div>
+    <button class="btn-submit" onclick="submitResponse()">Отправить отклик →</button>
+  </div>
+</div>
+
+<script>
+function openModal(){document.getElementById('modal').classList.add('open');}
+function closeModal(){document.getElementById('modal').classList.remove('open');}
+document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeModal();});
+function submitResponse(){
+  closeModal();
+  alert('Отклик отправлен! Клиент получит уведомление.');
+}
+</script>
+</body>
+</html>
