@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700;900&family=Mulish:wght@300;400;500;600&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--orange:#E8511A;--orange-dark:#C43E0E;--cream:#FFF8F4;--dark:#1A0A00;--gray:#6B5B52;--border:#F0DDD4;--white:#FFFFFF;}
+body{font-family:'Mulish',sans-serif;background:var(--cream);color:var(--dark);min-height:100vh;display:flex;flex-direction:column;}
+nav{display:flex;justify-content:space-between;align-items:center;padding:16px 48px;background:var(--white);border-bottom:1px solid var(--border);}
+.logo{font-family:'Unbounded',sans-serif;font-size:20px;font-weight:900;color:var(--orange);cursor:pointer;}
+.logo span{color:var(--dark);}
+.nav-link{font-size:14px;color:var(--gray);cursor:pointer;}
+.page{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 20px;}
+.auth-box{background:#fff;border-radius:24px;padding:48px;max-width:480px;width:100%;box-shadow:0 8px 40px rgba(232,81,26,0.08);}
+.step{display:none;}
+.step.active{display:block;}
+.auth-title{font-family:'Unbounded',sans-serif;font-size:24px;font-weight:900;margin-bottom:8px;}
+.auth-sub{font-size:15px;color:var(--gray);margin-bottom:32px;}
+.role-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;}
+.role-card{border:2px solid var(--border);border-radius:16px;padding:28px 20px;cursor:pointer;text-align:center;transition:all 0.2s;background:#fff;}
+.role-card:hover{border-color:var(--orange);}
+.role-card.selected{border-color:var(--orange);background:#FEE8DD;}
+.role-emoji{font-size:40px;margin-bottom:12px;}
+.role-title{font-family:'Unbounded',sans-serif;font-size:14px;font-weight:700;margin-bottom:6px;}
+.role-desc{font-size:12px;color:var(--gray);line-height:1.5;}
+.btn-main{width:100%;background:var(--orange);color:#fff;padding:16px;border-radius:10px;border:none;font-family:'Mulish',sans-serif;font-size:16px;font-weight:700;cursor:pointer;margin-top:8px;}
+.btn-main:disabled{background:#ccc;cursor:not-allowed;}
+.auth-footer{text-align:center;margin-top:20px;font-size:14px;color:var(--gray);}
+.auth-footer a{color:var(--orange);font-weight:600;cursor:pointer;}
+.form-group{margin-bottom:16px;}
+.form-label{font-size:13px;font-weight:600;margin-bottom:6px;display:block;color:var(--dark);}
+.form-input{width:100%;padding:13px 16px;border:1.5px solid var(--border);border-radius:10px;font-family:'Mulish',sans-serif;font-size:15px;color:var(--dark);outline:none;background:#fff;}
+.form-input:focus{border-color:var(--orange);}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.city-select{width:100%;padding:13px 16px;border:1.5px solid var(--border);border-radius:10px;font-family:'Mulish',sans-serif;font-size:15px;color:var(--dark);outline:none;background:#fff;cursor:pointer;}
+.back-btn{background:none;border:none;color:var(--gray);font-family:'Mulish',sans-serif;font-size:14px;cursor:pointer;margin-bottom:20px;display:flex;align-items:center;gap:6px;padding:0;}
+.master-fields{display:none;}
+.master-fields.show{display:block;}
+.specialty-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;}
+.spec-btn{padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-family:'Mulish',sans-serif;font-size:13px;cursor:pointer;background:#fff;text-align:center;}
+.spec-btn.active{border-color:var(--orange);background:#FEE8DD;color:var(--orange);font-weight:600;}
+.success-box{text-align:center;padding:20px 0;}
+.success-icon{font-size:64px;margin-bottom:20px;}
+.success-title{font-family:'Unbounded',sans-serif;font-size:22px;font-weight:900;margin-bottom:12px;}
+.success-text{font-size:15px;color:var(--gray);line-height:1.6;margin-bottom:32px;}
+.error-msg{background:#FEE8DD;color:var(--orange-dark);padding:12px 16px;border-radius:8px;font-size:14px;margin-bottom:16px;display:none;}
+.error-msg.show{display:block;}
+</style>
+</head>
+<body>
+<nav>
+  <div class="logo" id="logo-btn">КИРПИЧ<span>.KZ</span></div>
+  <div class="nav-link" id="login-nav-btn">Уже есть аккаунт? Войти</div>
+</nav>
+<div class="page">
+  <div class="auth-box">
+    <div class="step active" id="step1">
+      <div class="auth-title">Добро пожаловать!</div>
+      <div class="auth-sub">Кто вы на платформе?</div>
+      <div class="role-grid">
+        <div class="role-card" id="role-client">
+          <div class="role-emoji">🏠</div>
+          <div class="role-title">Клиент</div>
+          <div class="role-desc">Ищу мастера для ремонта или стройки</div>
+        </div>
+        <div class="role-card" id="role-master">
+          <div class="role-emoji">🔨</div>
+          <div class="role-title">Мастер</div>
+          <div class="role-desc">Хочу получать заказы на ремонт</div>
+        </div>
+      </div>
+      <button class="btn-main" id="next-btn" disabled>Продолжить →</button>
+      <div class="auth-footer">Уже есть аккаунт? <a id="login-link">Войти</a></div>
+    </div>
+    <div class="step" id="step2">
+      <button class="back-btn" id="back-btn">← Назад</button>
+      <div class="auth-title" id="step2-title">Регистрация клиента</div>
+      <div class="auth-sub">Заполните данные для входа</div>
+      <div class="error-msg" id="error-msg"></div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Имя</label>
+          <input class="form-input" type="text" id="fname" placeholder="Арлет">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Фамилия</label>
+          <input class="form-input" type="text" id="lname" placeholder="Батырбеков">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Номер телефона</label>
+        <input class="form-input" type="tel" id="phone" placeholder="+7 777 123 45 67">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Город</label>
+        <select class="city-select" id="city">
+          <option value="">Выберите город</option>
+          <option>Алматы</option><option>Астана</option><option>Шымкент</option>
+          <option>Актобе</option><option>Тараз</option><option>Павлодар</option>
+          <option>Усть-Каменогорск</option><option>Семей</option><option>Атырау</option>
+          <option>Костанай</option><option>Кызылорда</option><option>Уральск</option>
+          <option>Петропавловск</option><option>Актау</option><option>Темиртау</option>
+          <option>Туркестан</option><option>Экибастуз</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Пароль</label>
+        <input class="form-input" type="password" id="password" placeholder="Минимум 6 символов">
+      </div>
+      <div class="master-fields" id="master-fields">
+        <div class="form-group">
+          <label class="form-label">Опыт работы</label>
+          <select class="city-select" id="experience">
+            <option value="">Выберите опыт</option>
+            <option>Менее 1 года</option><option>1-3 года</option>
+            <option>3-5 лет</option><option>5-10 лет</option><option>Более 10 лет</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Специализация</label>
+          <div class="specialty-grid" id="spec-grid">
+            <div class="spec-btn">🏠 Ремонт квартир</div>
+            <div class="spec-btn">🏗️ Стройка домов</div>
+            <div class="spec-btn">🔧 Сантехника</div>
+            <div class="spec-btn">⚡ Электрика</div>
+            <div class="spec-btn">🎨 Покраска</div>
+            <div class="spec-btn">🪟 Потолки</div>
+          </div>
+        </div>
+      </div>
+      <button class="btn-main" id="reg-btn">Зарегистрироваться →</button>
+      <div class="auth-footer">Нажимая кнопку, вы соглашаетесь с <a>условиями использования</a></div>
+    </div>
+    <div class="step" id="step3">
+      <div class="success-box">
+        <div class="success-icon">🎉</div>
+        <div class="success-title" id="success-title">Вы зарегистрированы!</div>
+        <div class="success-text" id="success-text">Добро пожаловать на Кирпич.kz!</div>
+        <button class="btn-main" id="dashboard-btn">Перейти в кабинет →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script>
+(function() {
+  var SUPABASE_URL = 'https://caaiygfzggammeerypmy.supabase.co';
+  var SUPABASE_KEY = 'sb_publishable_ALnz8NcZgJC90mPGgeGISA_BOb0X3RX';
+  var sb = null;
+  var selectedRole = null;
+
+  try {
+    sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  } catch(e) {
+    console.log('Supabase init error:', e);
+  }
+
+  // Navigation
+  document.getElementById('logo-btn').addEventListener('click', function() {
+    window.location.href = 'index.html';
+  });
+  document.getElementById('login-nav-btn').addEventListener('click', function() {
+    window.location.href = 'login.html';
+  });
+  document.getElementById('login-link').addEventListener('click', function() {
+    window.location.href = 'login.html';
+  });
+  document.getElementById('back-btn').addEventListener('click', function() {
+    document.getElementById('step2').classList.remove('active');
+    document.getElementById('step1').classList.add('active');
+  });
+
+  // Role selection
+  document.getElementById('role-client').addEventListener('click', function() {
+    selectedRole = 'client';
+    document.getElementById('role-client').classList.add('selected');
+    document.getElementById('role-master').classList.remove('selected');
+    document.getElementById('next-btn').disabled = false;
+  });
+  document.getElementById('role-master').addEventListener('click', function() {
+    selectedRole = 'master';
+    document.getElementById('role-master').classList.add('selected');
+    document.getElementById('role-client').classList.remove('selected');
+    document.getElementById('next-btn').disabled = false;
+  });
+
+  // Next button
+  document.getElementById('next-btn').addEventListener('click', function() {
+    if (!selectedRole) return;
+    document.getElementById('step1').classList.remove('active');
+    document.getElementById('step2').classList.add('active');
+    if (selectedRole === 'master') {
+      document.getElementById('step2-title').textContent = 'Регистрация мастера';
+      document.getElementById('master-fields').classList.add('show');
+    } else {
+      document.getElementById('step2-title').textContent = 'Регистрация клиента';
+      document.getElementById('master-fields').classList.remove('show');
+    }
+  });
+
+  // Spec buttons
+  document.querySelectorAll('.spec-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      btn.classList.toggle('active');
+    });
+  });
+
+  // Register button
+  document.getElementById('reg-btn').addEventListener('click', async function() {
+    var fname = document.getElementById('fname').value.trim();
+    var lname = document.getElementById('lname').value.trim();
+    var phone = document.getElementById('phone').value.trim();
+    var city = document.getElementById('city').value;
+    var password = document.getElementById('password').value.trim();
+    var errorEl = document.getElementById('error-msg');
+
+    errorEl.classList.remove('show');
+
+    if (!fname || !phone || !city || !password) {
+      errorEl.textContent = '❌ Заполните все поля';
+      errorEl.classList.add('show');
+      return;
+    }
+    if (password.length < 6) {
+      errorEl.textContent = '❌ Пароль минимум 6 символов';
+      errorEl.classList.add('show');
+      return;
+    }
+
+    var btn = document.getElementById('reg-btn');
+    btn.textContent = 'Загрузка...';
+    btn.disabled = true;
+
+    try {
+      var fullName = fname + ' ' + lname;
+      
+      if (sb) {
+        var fakeEmail = phone.replace(/\D/g,'') + '@kirpich.kz';
+        await sb.auth.signUp({ email: fakeEmail, password: password });
+        await sb.from('users').insert({ name: fullName, phone: phone, city: city, role: selectedRole });
+      }
+
+      localStorage.setItem('user_name', fullName);
+      localStorage.setItem('user_phone', phone);
+      localStorage.setItem('user_city', city);
+      localStorage.setItem('user_role', selectedRole);
+
+      document.getElementById('step2').classList.remove('active');
+      document.getElementById('step3').classList.add('active');
+
+      if (selectedRole === 'master') {
+        document.getElementById('success-title').textContent = 'Профиль создан!';
+        document.getElementById('success-text').textContent = 'Добро пожаловать! Теперь вы можете смотреть объявления и откликаться на заказы.';
+      } else {
+        document.getElementById('success-text').textContent = 'Добро пожаловать на Кирпич.kz! Теперь вы можете выставлять объявления.';
+      }
+
+    } catch(e) {
+      console.log('Error:', e);
+      // Even if Supabase fails, save locally and proceed
+      localStorage.setItem('user_name', fname + ' ' + lname);
+      localStorage.setItem('user_phone', phone);
+      localStorage.setItem('user_city', city);
+      localStorage.setItem('user_role', selectedRole);
+      document.getElementById('step2').classList.remove('active');
+      document.getElementById('step3').classList.add('active');
+    }
+
+    btn.textContent = 'Зарегистрироваться →';
+    btn.disabled = false;
+  });
+
+  // Dashboard button
+  document.getElementById('dashboard-btn').addEventListener('click', function() {
+    if (selectedRole === 'master') {
+      window.location.href = 'master-dashboard.html';
+    } else {
+      window.location.href = 'dashboard.html';
+    }
+  });
+
+})();
+</script>
+</body>
+</html>
