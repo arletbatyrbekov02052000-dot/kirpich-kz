@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700;900&family=Mulish:wght@300;400;500;600&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --orange:#E8511A;
+  --orange-dark:#C43E0E;
+  --cream:#FFF8F4;
+  --dark:#1A0A00;
+  --gray:#6B5B52;
+  --border:#F0DDD4;
+  --white:#FFFFFF;
+  --green:#10B981;
+}
+body{font-family:'Mulish',sans-serif;background:var(--cream);color:var(--dark);min-height:100vh;}
+
+/* NAV */
+nav{display:flex;justify-content:space-between;align-items:center;padding:14px 48px;background:var(--white);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
+.logo{font-family:'Unbounded',sans-serif;font-size:18px;font-weight:900;color:var(--orange);cursor:pointer;}
+.logo span{color:var(--dark);}
+.nav-right{display:flex;align-items:center;gap:16px;}
+.nav-notif{width:36px;height:36px;background:var(--cream);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;border:1px solid var(--border);}
+.nav-avatar{width:36px;height:36px;background:var(--orange);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px;cursor:pointer;}
+.nav-name{font-size:14px;font-weight:600;}
+
+/* LAYOUT */
+.layout{display:grid;grid-template-columns:240px 1fr;min-height:calc(100vh - 65px);}
+
+/* SIDEBAR */
+.sidebar{background:var(--white);border-right:1px solid var(--border);padding:24px 0;}
+.sidebar-item{display:flex;align-items:center;gap:12px;padding:12px 24px;font-size:14px;font-weight:500;color:var(--gray);cursor:pointer;transition:all 0.2s;}
+.sidebar-item:hover{background:var(--cream);color:var(--dark);}
+.sidebar-item.active{background:#FEE8DD;color:var(--orange);font-weight:600;border-right:3px solid var(--orange);}
+.sidebar-icon{font-size:18px;}
+.sidebar-divider{height:1px;background:var(--border);margin:12px 24px;}
+
+/* MAIN */
+.main{padding:32px 40px;}
+.page-title{font-family:'Unbounded',sans-serif;font-size:24px;font-weight:900;margin-bottom:4px;}
+.page-sub{font-size:14px;color:var(--gray);margin-bottom:32px;}
+
+/* STATS */
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px;}
+.stat-card{background:var(--white);border-radius:16px;padding:20px;border:1px solid var(--border);}
+.stat-card-num{font-family:'Unbounded',sans-serif;font-size:28px;font-weight:900;color:var(--orange);margin-bottom:4px;}
+.stat-card-label{font-size:13px;color:var(--gray);}
+
+/* ADS */
+.section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.section-title{font-family:'Unbounded',sans-serif;font-size:16px;font-weight:700;}
+.btn-new{background:var(--orange);color:#fff;padding:10px 20px;border-radius:8px;border:none;font-family:'Mulish',sans-serif;font-size:13px;font-weight:700;cursor:pointer;}
+
+.ads-list{display:flex;flex-direction:column;gap:12px;}
+.ad-card{background:var(--white);border-radius:16px;padding:20px;border:1px solid var(--border);}
+.ad-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;}
+.ad-title{font-family:'Unbounded',sans-serif;font-size:14px;font-weight:700;}
+.ad-status{padding:4px 12px;border-radius:100px;font-size:12px;font-weight:600;}
+.status-active{background:#D1FAE5;color:#065F46;}
+.status-done{background:#E5E7EB;color:#374151;}
+.status-new{background:#FEE8DD;color:var(--orange);}
+.ad-desc{font-size:13px;color:var(--gray);margin-bottom:12px;line-height:1.5;}
+.ad-meta{display:flex;gap:16px;font-size:12px;color:var(--gray);}
+.ad-meta span{display:flex;align-items:center;gap:4px;}
+.ad-footer{display:flex;justify-content:space-between;align-items:center;margin-top:16px;padding-top:16px;border-top:1px solid var(--border);}
+.ad-responses{font-size:13px;font-weight:600;color:var(--orange);}
+.btn-view{background:var(--cream);color:var(--dark);padding:8px 16px;border-radius:8px;border:1px solid var(--border);font-family:'Mulish',sans-serif;font-size:13px;font-weight:600;cursor:pointer;}
+
+/* EMPTY */
+.empty{text-align:center;padding:60px 20px;}
+.empty-icon{font-size:48px;margin-bottom:16px;}
+.empty-title{font-family:'Unbounded',sans-serif;font-size:18px;font-weight:700;margin-bottom:8px;}
+.empty-text{font-size:14px;color:var(--gray);margin-bottom:24px;}
+
+/* MODAL */
+.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:center;}
+.modal.open{display:flex;}
+.modal-box{background:#fff;border-radius:24px;padding:40px;max-width:560px;width:90%;max-height:90vh;overflow-y:auto;}
+.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;}
+.modal-title{font-family:'Unbounded',sans-serif;font-size:20px;font-weight:900;}
+.modal-close{background:none;border:none;font-size:24px;cursor:pointer;color:var(--gray);}
+.form-group{margin-bottom:16px;}
+.form-label{font-size:13px;font-weight:600;margin-bottom:6px;display:block;}
+.form-input{width:100%;padding:13px 16px;border:1.5px solid var(--border);border-radius:10px;font-family:'Mulish',sans-serif;font-size:14px;outline:none;}
+.form-input:focus{border-color:var(--orange);}
+.form-textarea{width:100%;padding:13px 16px;border:1.5px solid var(--border);border-radius:10px;font-family:'Mulish',sans-serif;font-size:14px;outline:none;resize:vertical;min-height:100px;}
+.form-textarea:focus{border-color:var(--orange);}
+.form-select{width:100%;padding:13px 16px;border:1.5px solid var(--border);border-radius:10px;font-family:'Mulish',sans-serif;font-size:14px;outline:none;background:#fff;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.upload-area{border:2px dashed var(--border);border-radius:10px;padding:32px;text-align:center;cursor:pointer;margin-bottom:16px;}
+.upload-area:hover{border-color:var(--orange);}
+.upload-icon{font-size:32px;margin-bottom:8px;}
+.upload-text{font-size:14px;color:var(--gray);}
+.btn-submit{width:100%;background:var(--orange);color:#fff;padding:16px;border-radius:10px;border:none;font-family:'Mulish',sans-serif;font-size:16px;font-weight:700;cursor:pointer;margin-top:8px;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">КИРПИЧ<span>.KZ</span></div>
+  <div class="nav-right">
+    <div class="nav-notif">🔔</div>
+    <div class="nav-name" id="user-name">Загрузка...</div>
+    <div class="nav-avatar">А</div>
+  </div>
+</nav>
+
+<div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-item active" onclick="showTab('ads')">
+      <span class="sidebar-icon">📋</span> Мои объявления
+    </div>
+    <div class="sidebar-item" onclick="showTab('responses')">
+      <span class="sidebar-icon">💬</span> Отклики мастеров
+    </div>
+    <div class="sidebar-item" onclick="showTab('active')">
+      <span class="sidebar-icon">🔨</span> Активные заказы
+    </div>
+    <div class="sidebar-item" onclick="showTab('done')">
+      <span class="sidebar-icon">✅</span> Завершённые
+    </div>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-item" onclick="showTab('profile')">
+      <span class="sidebar-icon">👤</span> Профиль
+    </div>
+    <div class="sidebar-item" onclick="window.location='index.html'">
+      <span class="sidebar-icon">🚪</span> Выйти
+    </div>
+  </div>
+
+  <div class="main">
+
+    <!-- ADS TAB -->
+    <div id="tab-ads">
+      <div class="page-title">Мои объявления</div>
+      <div class="page-sub">Управляйте своими объявлениями</div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-card-num">2</div>
+          <div class="stat-card-label">Активных объявления</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-num">8</div>
+          <div class="stat-card-label">Откликов получено</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-num">1</div>
+          <div class="stat-card-label">Завершённых работ</div>
+        </div>
+      </div>
+
+      <div class="section-header">
+        <div class="section-title">Все объявления</div>
+        <button class="btn-new" onclick="openModal()">+ Новое объявление</button>
+      </div>
+
+      <div class="ads-list">
+        <div class="ad-card">
+          <div class="ad-header">
+            <div class="ad-title">Ремонт квартиры 75м² под ключ</div>
+            <div class="ad-status status-active">Активно</div>
+          </div>
+          <div class="ad-desc">Нужен полный ремонт 3-комнатной квартиры. Выравнивание стен, новая сантехника, электрика, укладка плитки в ванной.</div>
+          <div class="ad-meta">
+            <span>📍 Алматы</span>
+            <span>💰 2 500 000 ₸</span>
+            <span>📅 20 мая 2026</span>
+          </div>
+          <div class="ad-footer">
+            <div class="ad-responses">💬 5 откликов</div>
+            <button class="btn-view" onclick="window.location='ad.html'">Смотреть отклики →</button>
+          </div>
+        </div>
+
+        <div class="ad-card">
+          <div class="ad-header">
+            <div class="ad-title">Установка натяжного потолка</div>
+            <div class="ad-status status-new">Новое</div>
+          </div>
+          <div class="ad-desc">Нужна установка натяжного потолка в зале 25м². Желательно глянцевый белый или серый цвет.</div>
+          <div class="ad-meta">
+            <span>📍 Алматы</span>
+            <span>💰 150 000 ₸</span>
+            <span>📅 21 мая 2026</span>
+          </div>
+          <div class="ad-footer">
+            <div class="ad-responses">💬 3 отклика</div>
+            <button class="btn-view">Смотреть отклики →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESPONSES TAB -->
+    <div id="tab-responses" style="display:none;">
+      <div class="page-title">Отклики мастеров</div>
+      <div class="page-sub">Выберите лучшего мастера</div>
+
+      <div class="ads-list">
+        <div class="ad-card">
+          <div style="display:flex;gap:16px;align-items:flex-start;">
+            <div style="width:52px;height:52px;background:var(--orange);border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:18px;flex-shrink:0;">А</div>
+            <div style="flex:1;">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+                <div>
+                  <div style="font-family:Unbounded,sans-serif;font-size:14px;font-weight:700;">Асхат Бейсенов</div>
+                  <div style="font-size:12px;color:var(--gray);margin-top:2px;">⭐ 4.9 · Опыт 8 лет · 142 работы</div>
+                </div>
+                <div style="font-family:Unbounded,sans-serif;font-size:16px;font-weight:900;color:var(--orange);">2 200 000 ₸</div>
+              </div>
+              <div style="font-size:13px;color:var(--gray);margin:10px 0;line-height:1.5;">Здравствуйте! Готов взяться за ваш проект. Делаю качественно и в срок. Работаю с гарантией 2 года.</div>
+              <div style="display:flex;gap:8px;">
+                <button style="background:var(--orange);color:#fff;padding:8px 16px;border-radius:8px;border:none;font-family:Mulish,sans-serif;font-size:13px;font-weight:700;cursor:pointer;">✓ Принять</button>
+                <button style="background:var(--cream);color:var(--dark);padding:8px 16px;border-radius:8px;border:1px solid var(--border);font-family:Mulish,sans-serif;font-size:13px;font-weight:600;cursor:pointer;">💬 Написать</button>
+                <button style="background:#FEE8DD;color:var(--orange-dark);padding:8px 16px;border-radius:8px;border:none;font-family:Mulish,sans-serif;font-size:13px;font-weight:600;cursor:pointer;">✕ Отклонить</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ad-card">
+          <div style="display:flex;gap:16px;align-items:flex-start;">
+            <div style="width:52px;height:52px;background:#7C3AED;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:18px;flex-shrink:0;">Д</div>
+            <div style="flex:1;">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+                <div>
+                  <div style="font-family:Unbounded,sans-serif;font-size:14px;font-weight:700;">Данияр Сейткали</div>
+                  <div style="font-size:12px;color:var(--gray);margin-top:2px;">⭐ 4.7 · Опыт 5 лет · 89 работ</div>
+                </div>
+                <div style="font-family:Unbounded,sans-serif;font-size:16px;font-weight:900;color:var(--orange);">2 100 000 ₸</div>
+              </div>
+              <div style="font-size:13px;color:var(--gray);margin:10px 0;line-height:1.5;">Опытная бригада из 4 человек. Работаем быстро и чисто. Есть портфолио похожих работ.</div>
+              <div style="display:flex;gap:8px;">
+                <button style="background:var(--orange);color:#fff;padding:8px 16px;border-radius:8px;border:none;font-family:Mulish,sans-serif;font-size:13px;font-weight:700;cursor:pointer;">✓ Принять</button>
+                <button style="background:var(--cream);color:var(--dark);padding:8px 16px;border-radius:8px;border:1px solid var(--border);font-family:Mulish,sans-serif;font-size:13px;font-weight:600;cursor:pointer;">💬 Написать</button>
+                <button style="background:#FEE8DD;color:var(--orange-dark);padding:8px 16px;border-radius:8px;border:none;font-family:Mulish,sans-serif;font-size:13px;font-weight:600;cursor:pointer;">✕ Отклонить</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- OTHER TABS -->
+    <div id="tab-active" style="display:none;">
+      <div class="page-title">Активные заказы</div>
+      <div class="page-sub">Заказы в работе</div>
+      <div class="empty">
+        <div class="empty-icon">🔨</div>
+        <div class="empty-title">Нет активных заказов</div>
+        <div class="empty-text">Примите мастера из откликов чтобы начать работу</div>
+      </div>
+    </div>
+
+    <div id="tab-done" style="display:none;">
+      <div class="page-title">Завершённые работы</div>
+      <div class="page-sub">История выполненных заказов</div>
+      <div class="empty">
+        <div class="empty-icon">✅</div>
+        <div class="empty-title">Нет завершённых работ</div>
+        <div class="empty-text">Здесь будет история ваших заказов</div>
+      </div>
+    </div>
+
+    <div id="tab-profile" style="display:none;">
+      <div class="page-title">Мой профиль</div>
+      <div class="page-sub">Управляйте своими данными</div>
+      <div class="ad-card" style="max-width:480px;">
+        <div style="display:flex;gap:16px;align-items:center;margin-bottom:24px;">
+          <div style="width:64px;height:64px;background:var(--orange);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:24px;">А</div>
+          <div>
+            <div style="font-family:Unbounded,sans-serif;font-size:16px;font-weight:700;">Айгуль Бекова</div>
+            <div style="font-size:13px;color:var(--gray);">Клиент · Алматы</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Имя</label>
+          <input class="form-input" value="Айгуль">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Телефон</label>
+          <input class="form-input" value="+7 777 123 45 67">
+        </div>
+        <button class="btn-submit" style="margin-top:8px;">Сохранить изменения</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- NEW AD MODAL -->
+<div class="modal" id="modal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-title">Новое объявление</div>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Категория работы</label>
+      <select class="form-select" id="ad-category">
+        <option>Ремонт квартиры</option>
+        <option>Строительство дома</option>
+        <option>Сантехника</option>
+        <option>Электрика</option>
+        <option>Натяжные потолки</option>
+        <option>Покраска и штукатурка</option>
+        <option>Укладка плитки</option>
+        <option>Установка дверей</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Заголовок объявления</label>
+      <input class="form-input" type="text" placeholder="Например: Ремонт квартиры 75м² под ключ" id="ad-title">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Описание работы</label>
+      <textarea class="form-textarea" placeholder="Опишите подробно что нужно сделать, материалы, сроки..." id="ad-desc"></textarea>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Город</label>
+        <select class="form-select" id="ad-category">
+          <option>Алматы</option>
+          <option>Астана</option>
+          <option>Шымкент</option>
+          <option>Актобе</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Бюджет (₸)</label>
+        <input class="form-input" type="number" placeholder="500 000" id="ad-budget">
+      </div>
+    </div>
+
+    <div class="upload-area" onclick="document.getElementById('file-input').click()">
+      <div class="upload-icon">📸</div>
+      <div class="upload-text">Нажмите чтобы загрузить фото</div>
+      <input type="file" id="file-input" style="display:none;" multiple accept="image/*">
+    </div>
+
+    <button class="btn-submit" onclick="submitAd()">Опубликовать объявление →</button>
+  </div>
+</div>
+
+<script>
+function showTab(tab) {
+  ['ads','responses','active','done','profile'].forEach(t => {
+    document.getElementById('tab-'+t).style.display = 'none';
+  });
+  document.getElementById('tab-'+tab).style.display = 'block';
+  document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+}
+function openModal(){document.getElementById('modal').classList.add('open');}
+function closeModal(){document.getElementById('modal').classList.remove('open');}
+document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeModal();});
+function submitAd(){
+  if(window.submitAdAsync){ window.submitAdAsync(); } else { closeModal(); alert('Объявление опубликовано!'); }
+}
+</script>
+
+<script>
+(function(){
+  var name = localStorage.getItem("user_name") || "Пользователь";
+  var city = localStorage.getItem("user_city") || "";
+  var el = document.getElementById("user-name");
+  if(el) el.textContent = name.split(" ")[0];
+  var avatar = document.querySelector(".nav-avatar");
+  if(avatar) avatar.textContent = name.charAt(0).toUpperCase();
+  var profileName = document.querySelector(".profile-card .form-input");
+  if(profileName) profileName.value = name;
+})();
+</script>
+</body>
+</html><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script>
+(function(){
+  var SUPABASE_URL = 'https://caaiygfzggammeerypmy.supabase.co';
+  var SUPABASE_KEY = 'sb_publishable_ALnz8NcZgJC90mPGgeGISA_BOb0X3RX';
+  var sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  window.submitAdAsync = async function() {
+    var title = document.getElementById('ad-title') ? document.getElementById('ad-title').value.trim() : '';
+    var desc = document.getElementById('ad-desc') ? document.getElementById('ad-desc').value.trim() : '';
+    var budget = document.getElementById('ad-budget') ? document.getElementById('ad-budget').value.trim() : '';
+    var category = document.getElementById('ad-category') ? document.getElementById('ad-category').value : 'Ремонт квартиры';
+    var city = localStorage.getItem('user_city') || 'Алматы';
+
+    if (!title || !desc || !budget) {
+      alert('Пожалуйста, заполните все поля');
+      return;
+    }
+
+    try {
+      var result = await sb.from('ads').insert({
+        title: title,
+        description: desc,
+        budget: parseInt(budget),
+        category: category,
+        city: city,
+        status: 'active'
+      });
+
+      if (result.error) {
+        console.log('Error:', result.error);
+      }
+    } catch(e) {
+      console.log('Error:', e);
+    }
+
+    closeModal();
+    alert('✅ Объявление опубликовано!');
+    location.reload();
+  };
+})();
+</script>
