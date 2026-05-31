@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700;900&family=Mulish:wght@300;400;500;600&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--orange:#E8511A;--orange-dark:#C43E0E;--cream:#FFF8F4;--dark:#1A0A00;--gray:#6B5B52;--border:#F0DDD4;--white:#FFFFFF;}
+body{font-family:'Mulish',sans-serif;background:var(--cream);color:var(--dark);min-height:100vh;display:flex;flex-direction:column;}
+nav{display:flex;justify-content:space-between;align-items:center;padding:16px 48px;background:var(--white);border-bottom:1px solid var(--border);}
+.logo{font-family:'Unbounded',sans-serif;font-size:20px;font-weight:900;color:var(--orange);cursor:pointer;}
+.logo span{color:var(--dark);}
+.nav-link{font-size:14px;color:var(--gray);cursor:pointer;}
+.page{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 20px;}
+.auth-box{background:#fff;border-radius:24px;padding:48px;max-width:440px;width:100%;box-shadow:0 8px 40px rgba(232,81,26,0.08);}
+.auth-title{font-family:'Unbounded',sans-serif;font-size:24px;font-weight:900;margin-bottom:8px;}
+.auth-sub{font-size:15px;color:var(--gray);margin-bottom:32px;}
+.form-group{margin-bottom:16px;}
+.form-label{font-size:13px;font-weight:600;margin-bottom:6px;display:block;color:var(--dark);}
+.form-input{width:100%;padding:13px 16px;border:1.5px solid var(--border);border-radius:10px;font-family:'Mulish',sans-serif;font-size:15px;color:var(--dark);outline:none;background:#fff;}
+.form-input:focus{border-color:var(--orange);}
+.forgot{text-align:right;margin-top:-8px;margin-bottom:16px;}
+.forgot a{font-size:13px;color:var(--orange);cursor:pointer;font-weight:600;}
+.btn-main{width:100%;background:var(--orange);color:#fff;padding:16px;border-radius:10px;border:none;font-family:'Mulish',sans-serif;font-size:16px;font-weight:700;cursor:pointer;margin-top:8px;}
+.btn-main:disabled{background:#ccc;cursor:not-allowed;}
+.auth-footer{text-align:center;margin-top:24px;font-size:14px;color:var(--gray);}
+.auth-footer a{color:var(--orange);font-weight:600;cursor:pointer;}
+.error-msg{background:#FEE8DD;color:var(--orange-dark);padding:12px 16px;border-radius:8px;font-size:14px;margin-bottom:16px;display:none;}
+.error-msg.show{display:block;}
+.success-box{display:none;text-align:center;padding:20px 0;}
+.success-box.show{display:block;}
+.success-icon{font-size:64px;margin-bottom:20px;}
+.success-title{font-family:'Unbounded',sans-serif;font-size:22px;font-weight:900;margin-bottom:12px;}
+.success-text{font-size:15px;color:var(--gray);line-height:1.6;margin-bottom:32px;}
+</style>
+</head>
+<body>
+<nav>
+  <div class="logo" id="logo-btn">КИРПИЧ<span>.KZ</span></div>
+  <div class="nav-link" id="register-nav">Нет аккаунта? Зарегистрироваться</div>
+</nav>
+<div class="page">
+  <div class="auth-box">
+    <div id="login-form">
+      <div class="auth-title">Добро пожаловать!</div>
+      <div class="auth-sub">Войдите в свой аккаунт</div>
+      <div class="error-msg" id="error-msg"></div>
+      <div class="form-group">
+        <label class="form-label">Номер телефона</label>
+        <input class="form-input" type="tel" id="phone" placeholder="+7 777 123 45 67">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Пароль</label>
+        <input class="form-input" type="password" id="password" placeholder="Введите пароль">
+      </div>
+      <button class="btn-main" id="login-btn">Войти →</button>
+      <div class="auth-footer">
+        Нет аккаунта? <a id="register-link">Зарегистрироваться</a>
+      </div>
+    </div>
+    <div class="success-box" id="success-box">
+      <div class="success-icon">👋</div>
+      <div class="success-title">Добро пожаловать!</div>
+      <div class="success-text" id="success-text">Вы успешно вошли!</div>
+      <button class="btn-main" id="dashboard-btn">Перейти в кабинет →</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script>
+(function() {
+  var SUPABASE_URL = 'https://caaiygfzggammeerypmy.supabase.co';
+  var SUPABASE_KEY = 'sb_publishable_ALnz8NcZgJC90mPGgeGISA_BOb0X3RX';
+  var sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  var userRole = null;
+
+  document.getElementById('logo-btn').addEventListener('click', function() { window.location.href = 'index.html'; });
+  document.getElementById('register-nav').addEventListener('click', function() { window.location.href = 'register.html'; });
+  document.getElementById('register-link').addEventListener('click', function() { window.location.href = 'register.html'; });
+
+  document.getElementById('login-btn').addEventListener('click', async function() {
+    var phone = document.getElementById('phone').value.trim();
+    var password = document.getElementById('password').value.trim();
+    var errorEl = document.getElementById('error-msg');
+    errorEl.classList.remove('show');
+
+    if (!phone || !password) {
+      errorEl.textContent = '❌ Заполните все поля';
+      errorEl.classList.add('show');
+      return;
+    }
+
+    var btn = document.getElementById('login-btn');
+    btn.textContent = 'Загрузка...';
+    btn.disabled = true;
+
+    try {
+      var fakeEmail = phone.replace(/\D/g,'') + '@kirpich.kz';
+      var result = await sb.auth.signInWithPassword({ email: fakeEmail, password: password });
+
+      if (result.error) {
+        errorEl.textContent = '❌ Неверный телефон или пароль';
+        errorEl.classList.add('show');
+      } else {
+        // Get user data
+        var userData = await sb.from('users').select('*').eq('phone', phone).single();
+        if (userData.data) {
+          localStorage.setItem('user_name', userData.data.name);
+          localStorage.setItem('user_phone', userData.data.phone);
+          localStorage.setItem('user_city', userData.data.city);
+          localStorage.setItem('user_role', userData.data.role);
+          userRole = userData.data.role;
+        }
+        var name = localStorage.getItem('user_name') || 'Пользователь';
+        document.getElementById('login-form').style.display = 'none';
+        document.getElementById('success-box').classList.add('show');
+        document.getElementById('success-text').textContent = 'Добро пожаловать, ' + name.split(' ')[0] + '!';
+      }
+    } catch(e) {
+      errorEl.textContent = '❌ Ошибка входа. Попробуйте снова.';
+      errorEl.classList.add('show');
+    }
+
+    btn.textContent = 'Войти →';
+    btn.disabled = false;
+  });
+
+  document.getElementById('dashboard-btn').addEventListener('click', function() {
+    var role = userRole || localStorage.getItem('user_role');
+    window.location.href = role === 'master' ? 'master-dashboard.html' : 'dashboard.html';
+  });
+})();
+</script>
+</body>
+</html>
